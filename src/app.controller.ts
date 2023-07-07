@@ -22,11 +22,6 @@ export class AppController {
     private authService: AuthService,
   ) {}
 
-  @Get()
-  hello() {
-    return 'Hello World!';
-  }
-
   @Post('auth/register')
   @UsePipes(new JoiValidationPipe(CreateUserSchema))
   register(@Body() createUserDto: CreateUserDto) {

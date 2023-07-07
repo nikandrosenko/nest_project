@@ -15,10 +15,53 @@ describe('AppController (e2e)', () => {
     await app.init();
   });
 
-  it('/ (GET)', () => {
+  it('/category (GET)', () => {
     return request(app.getHttpServer())
-      .get('/')
+      .get('/category')
       .expect(200)
-      .expect('Hello World!');
+      .expect((res) => {
+        expect(res.body).toEqual(expect.any(Array));
+      });
+  });
+
+  it('/category/1 (GET)', () => {
+    return request(app.getHttpServer())
+      .get('/category/1')
+      .expect(200)
+      .expect('');
+  });
+
+  it('/category/1 (POST)', () => {
+    return request(app.getHttpServer())
+      .post('/category')
+      .send({ id: 1, name: 'Новая категория' })
+      .expect(201)
+      .expect({
+        id: 1,
+        name: 'Новая категория',
+      });
+  });
+
+  it('/category/1 (GET)', () => {
+    return request(app.getHttpServer()).get('/category/1').expect(200).expect({
+      id: 1,
+      name: 'Новая категория',
+    });
+  });
+
+  it('/category/1 (DELETE)', () => {
+    return request(app.getHttpServer()).delete('/category/1').expect(200);
+  });
+
+  it('/category/1 (GET)', () => {
+    return request(app.getHttpServer())
+      .get('/category/1')
+      .expect(200)
+      .expect('');
+  });
+
+  afterAll((done) => {
+    app.close();
+    done();
   });
 });
